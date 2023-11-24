@@ -79,7 +79,7 @@ def modelo_senias(imagen):
 
     img = cv2.resize(img, (224,224))
     prediccion = modelo.predict(img.reshape(-1, 224, 224, 3))#matriz de predicciones
-    #print(prediccion[0])#matriz de predicciones
+    print(prediccion[0])#matriz de predicciones
 
     #labels={
      #   0:"a", 1:"b", 2:"c", 3:"d", 4:"e", 5:"eye", 6:"f", 7:"g", 8:"h", 9:"i", 10:"j", 11:"k", 12:"l",
