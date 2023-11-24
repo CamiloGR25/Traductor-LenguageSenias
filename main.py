@@ -5,6 +5,7 @@ import numpy as np #manejo de los datos del modelo
 from PIL import Image #cambiar tamaño img
 from deep_translator import GoogleTranslator
 import requests
+import json
 from io import BytesIO
 import tensorflow_hub as hub# Cargar de modelos de AI
 from tensorflow.keras.models import load_model
@@ -69,11 +70,6 @@ def generate_frames():
 def modelo_senias(imagen):
   
     #Categorizar una imagen
-    #https://img.freepik.com/fotos-premium/lenguaje-senas-manual-letra-b_596820-40.jpg -->B
-    #https://thumbs.dreamstime.com/z/letra-f-en-lenguaje-de-signos-para-sordos-asl-gesto-mano-sobre-un-blanco-ortograf%C3%ADa-dactilar-tambi%C3%A9n-americano-fondo-187348729.jpg -->F
-    #https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU6xP1vJxEPeJuQvvl1sUCA2fOjLu3L5obBcHUsnZzKS_0vSi9IlCB4vZKUQnucgZ2hCU&usqp=CAU -->o
-    #imagen='https://thumbs.dreamstime.com/z/letra-f-en-lenguaje-de-signos-para-sordos-asl-gesto-mano-sobre-un-blanco-ortograf%C3%ADa-dactilar-tambi%C3%A9n-americano-fondo-187348729.jpg'
-    #respuesta = requests.get(imagen)
     img = Image.open(BytesIO(imagen))
     img = np.array(img).astype(float)/255
 
@@ -81,10 +77,6 @@ def modelo_senias(imagen):
     prediccion = modelo.predict(img.reshape(-1, 224, 224, 3))#matriz de predicciones
     print(prediccion[0])#matriz de predicciones
 
-    #labels={
-     #   0:"a", 1:"b", 2:"c", 3:"d", 4:"e", 5:"eye", 6:"f", 7:"g", 8:"h", 9:"i", 10:"j", 11:"k", 12:"l",
-      #  13:"m", 14:"n",15:"o",16:"p",17:"q",18:"r",19:"s",20:"t",21:"u",22:"v",23:"w",24:"x",25:"y",26:"z"
-    #}
     print("////////////////////////////////////////////////////////////")
     print(np.argmax(prediccion[0], axis=-1))
     indice=np.argmax(prediccion[0], axis=-1)
@@ -96,24 +88,42 @@ def modelo_senias(imagen):
      #   "accuracy":prediccion
     #}
 
+pregunta="bn"
+
+@app.route('/')
+def predecirPalabra(pregunta):
+    url = "http://127.0.0.1:3002/chat"
+    headers = {'Content-Type': 'application/json'}
+    data = {'pregunta': "voy a deletrear y quiero que prediga lo que intento decir, asegurate unicamente darme SOLO las opciones de la palabra, sin escribir nada mas: "+pregunta}
+
+    respuesta = requests.post(url, headers=headers, data=json.dumps(data))
+    
+    if respuesta.status_code == 200:
+        print(respuesta.json()['respuesta'])
+        print("*********")
+        print(str(respuesta.json()['respuesta']))
+        
+        return str(respuesta.json()['respuesta'])
+        #return render_template('index.html',prediccion=respuesta.json()['respuesta'])
+    else:
+        print(f'Error: {respuesta.status_code}')
 
 @app.route('/video_feed') #devuelve los fotogramas para verse en la pag web
 def video_feed():
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-
+prediccion=predecirPalabra(pregunta)
 @app.route('/', methods=['POST'])
 def traducir():
+  
   if request.method == 'POST':
         texto_a_traducir = request.form["texto_a_traducir"]
         traductor = GoogleTranslator(source='es', target='en')
         resultado = traductor.translate(texto_a_traducir)
-        return render_template('index.html', resultado=resultado, texto=texto_a_traducir)
-
+        return render_template('index.html', resultado=resultado, texto=texto_a_traducir, prediccion=prediccion)
 
 
 if __name__ == '__main__':
-    
     app.run(debug=True) #Ejecuta la app en un navegador web
 
 

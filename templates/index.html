@@ -51,12 +51,32 @@
         .translation-result {
             margin-top: 20px;
         }
+
+        .video {
+            float: left;
+            width: 50%;
+        }
+
+        .OpenIA {
+            float: left;
+            width: 50%;
+            background-color: #f5a2a2;
+        }
     </style>
 </head>
 
 <body>
-    <h1>Prototipo lenguaje de señas</h1>
-    <img id="handImage" alt="Prototipo-señas" src="{{ url_for('video_feed') }}">
+
+    <div class="video">
+        <h1>Prototipo lenguaje de señas</h1>
+        <img id="handImage" alt="Prototipo-señas" src="{{ url_for('video_feed') }}">
+    </div>
+    <div class="OpenIA">
+        <h1>OPCIONES: </h1>
+        <h3>{{ prediccion }}</h3>
+    </div>
+
+
 
     <div>
         <h1>Traductor</h1>
