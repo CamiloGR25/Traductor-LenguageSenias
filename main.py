@@ -15,7 +15,7 @@ from tensorflow.keras.utils import custom_object_scope
 
 classes=['a', 'b', 'c', 'd', 'e','eye','f','g','h','i','j','k','l','m','n','o', 'p', 'q', 'r', 's', 't','u', 'v','w','x', 'y','z']
 #model = tf.keras.models.load_model('modelo_entrenado.h5') #se integra el modelo entrenado
-
+palabra=""
 
 app = Flask(__name__) #Crea una nueva instancia del modilo actual gracias a __name__
 
@@ -82,7 +82,15 @@ def modelo_senias(imagen):
     indice=np.argmax(prediccion[0], axis=-1)
     print("la letra es: "+str(classes[indice]))
     print("////////////////////////////////////////////////////////////")
-
+    
+    #Concatenar las letras
+    global palabra
+    if len(palabra)==0: #verificar si esta vacio
+        palabra += str(classes[indice])
+    elif palabra[-1]!=classes[indice]:#verificar que la ultima letra es diferente a la nueva
+        palabra += str(classes[indice])
+    
+    print("--------Esta es la palabra: "+str(palabra))
    # return {
     #    "label":np.argmax(prediccion[0], axis=-1), 
      #   "accuracy":prediccion
@@ -100,11 +108,11 @@ def predecirPalabra(pregunta):
     
     if respuesta.status_code == 200:
         print(respuesta.json()['respuesta'])
-        print("*********")
-        print(str(respuesta.json()['respuesta']))
+       
+        
         
         return str(respuesta.json()['respuesta'])
-        #return render_template('index.html',prediccion=respuesta.json()['respuesta'])
+     
     else:
         print(f'Error: {respuesta.status_code}')
 
