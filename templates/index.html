@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lenguaje de señas</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        img {
+            max-width: 100%;
+            border: 2px solid #333;
+            margin-top: 20px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 300px;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        .translation-result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Prototipo lenguaje de señas</h1>
+    <img id="handImage" alt="Prototipo-señas" src="{{ url_for('video_feed') }}">
+
+    <div>
+        <h1>Traductor</h1>
+        <form method="post">
+            <label for="texto_a_traducir">Texto a Traducir:</label>
+            <input type="text" id="texto_a_traducir" name="texto_a_traducir" required>
+            <button type="submit">Traducir</button>
+        </form>
+
+        {% if resultado %}
+        <div class="translation-result">
+            <p>Texto Original: {{ texto }}</p>
+            <p>Resultado: {{ resultado }}</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+
+</html>
