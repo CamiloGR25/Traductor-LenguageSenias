@@ -18,6 +18,7 @@ palabra=""
 prediccion=""
 delay=0
 idioma_Traducir='en'
+resultado=""
 
 app = Flask(__name__) #Crea una nueva instancia del modilo actual gracias a __name__
 
@@ -139,21 +140,27 @@ def predecirPalabra(pregunta):
     else:
         print(f'Error: {respuesta.status_code}')
 
+@app.route('/')
+def mostrar_traduccion():
+    return render_template('mostrar_traduccion.html', traduccion=resultado)
 
-
+@app.route('/actualizar_traductor', methods=['GET'])
+def actualizar_traductor():
+    return jsonify({'traduccion': resultado})
 
 #traductor:
 def traducir(texto):
+    global resultado
     traductor = GoogleTranslator(source='es', target=idioma_Traducir)
     resultado = traductor.translate(texto)
-        
+
+    
 
 #Idioma a traducir
 @app.route('/traducir', methods=['POST'])
 def obtenerLenguaje():
   idioma = request.form['lenguaje'] #trae el valor de la opcion
   global idioma_Traducir
-  print("************************")
   #evalua que opcion es:
   if idioma=="1":
       idioma_Traducir='ar' #a la variable global se le asigna el target respectivo al idioma

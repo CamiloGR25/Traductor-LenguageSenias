@@ -108,6 +108,7 @@
 
     <h1>OPCIONES:</h1>
     <p id="prediccion"></p>
+    <p id="traduccion"></p>
 
     <div>
         <h1>Traductor</h1>
@@ -156,6 +157,19 @@
 
         // Actualizar la prediccion cada segundo 
         setInterval(actualizarPalabra, 1000);
+
+        function actualizarTraduccion() {
+            // Realizar una solicitud AJAX para obtener la prediccion actualizada
+            fetch('/actualizar_traductor')
+                .then(response => response.json())
+                .then(data => {
+                    // Actualizar el contenido en la página
+                    document.getElementById('traduccion').innerText = data.traduccion;
+                });
+        }
+
+        // Actualizar la prediccion cada segundo 
+        setInterval(actualizarTraduccion, 1000);
 
     </script>
 </body>
