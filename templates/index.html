@@ -15,6 +15,10 @@
             color: #333;
         }
 
+        h2 {
+            display: inline-block;
+        }
+
         img {
             max-width: 100%;
             border: 2px solid #333;
@@ -62,21 +66,48 @@
             width: 50%;
             background-color: #f5a2a2;
         }
+
+        #languageSelect {
+            display: inline-block;
+        }
+
+        label[for="languageSelect"] {
+            display: inline-block;
+            margin-right: 10px;
+        }
     </style>
+
 </head>
 
 <body>
 
     <div class="video">
         <h1>Prototipo lenguaje de señas</h1>
+        <h2>Letras:</h2>
+        <h2 id="palabra"></h2> <br>
         <img id="handImage" alt="Prototipo-señas" src="{{ url_for('video_feed') }}">
-    </div>
-    <div class="OpenIA">
-        <h1>OPCIONES: </h1>
-        <h3>{{ prediccion }}</h3>
+
     </div>
 
+    <div>
+        <h1>Traductor:</h1>
+        <form action="/traducir" method="post">
+            <label for="languageSelect">Seleccione el lenguaje a traducir:</label>
+            <select name="lenguaje" id="languageSelect">
+                <option value=""></option>
+                <option value="1">Árabe</option>
+                <option value="2">Francés</option>
+                <option value="3">Portugués</option>
+                <option value="4">Japonés</option>
+                <option value="5">Ruso</option>
 
+            </select>
+            <button type="submit">Traducir</button>
+        </form>
+    </div>
+
+    <h1>OPCIONES:</h1>
+    <p id="prediccion"></p>
 
     <div>
         <h1>Traductor</h1>
@@ -93,6 +124,40 @@
         </div>
         {% endif %}
     </div>
+
+
+
+
+
+    <script>
+        function actualizarPrediccion() {
+            // Realizar una solicitud AJAX para obtener la prediccion actualizada
+            fetch('/actualizar_prediccion')
+                .then(response => response.json())
+                .then(data => {
+                    // Actualizar el contenido en la página
+                    document.getElementById('prediccion').innerText = data.prediccion;
+                });
+        }
+
+        // Actualizar la prediccion cada 5 segundos 
+        setInterval(actualizarPrediccion, 5000);
+
+
+        function actualizarPalabra() {
+            // Realizar una solicitud AJAX para obtener la prediccion actualizada
+            fetch('/actualizar_palabra')
+                .then(response => response.json())
+                .then(data => {
+                    // Actualizar el contenido en la página
+                    document.getElementById('palabra').innerText = data.palabra;
+                });
+        }
+
+        // Actualizar la prediccion cada segundo 
+        setInterval(actualizarPalabra, 1000);
+
+    </script>
 </body>
 
 </html>
