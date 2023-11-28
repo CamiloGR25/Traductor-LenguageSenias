@@ -151,10 +151,9 @@ def actualizar_traductor():
 #traductor:
 def traducir(texto):
     global resultado
-    traductor = GoogleTranslator(source='es', target=idioma_Traducir)
-    resultado = traductor.translate(texto)
-
-    
+    traductor = GoogleTranslator(source='es', target=idioma_Traducir)#metodo para traducir
+    resultado = traductor.translate(texto)#traducimos el texto y se guarda en resultado
+   
 
 #Idioma a traducir
 @app.route('/traducir', methods=['POST'])

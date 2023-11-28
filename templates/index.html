@@ -110,25 +110,6 @@
     <p id="prediccion"></p>
     <p id="traduccion"></p>
 
-    <div>
-        <h1>Traductor</h1>
-        <form method="post">
-            <label for="texto_a_traducir">Texto a Traducir:</label>
-            <input type="text" id="texto_a_traducir" name="texto_a_traducir" required>
-            <button type="submit">Traducir</button>
-        </form>
-
-        {% if resultado %}
-        <div class="translation-result">
-            <p>Texto Original: {{ texto }}</p>
-            <p>Resultado: {{ resultado }}</p>
-        </div>
-        {% endif %}
-    </div>
-
-
-
-
 
     <script>
         function actualizarPrediccion() {
