@@ -5,15 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lenguaje de señas</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Castellar', sans-serif;
             margin: 20px;
         }
 
-        h1 {
-            color: #333;
-        }
+
 
         h2 {
             display: inline-block;
@@ -21,7 +22,7 @@
 
         img {
             max-width: 100%;
-            border: 2px solid #333;
+            border: 2px solid #f8f8f8;
             margin-top: 20px;
         }
 
@@ -52,21 +53,6 @@
             background-color: #555;
         }
 
-        .translation-result {
-            margin-top: 20px;
-        }
-
-        .video {
-            float: left;
-            width: 50%;
-        }
-
-        .OpenIA {
-            float: left;
-            width: 50%;
-            background-color: #f5a2a2;
-        }
-
         #languageSelect {
             display: inline-block;
         }
@@ -78,37 +64,51 @@
     </style>
 
 </head>
+<!--class="bg-light text-black" -->
 
-<body>
+<body class="bg-dark text-white">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1 class="display-4"><b>PROTOTIPO DE LENGUAJE DE SEÑAS:</b></h1><br><br>
+            </div>
 
-    <div class="video">
-        <h1>Prototipo lenguaje de señas</h1>
-        <h2>Letras:</h2>
-        <h2 id="palabra"></h2> <br>
-        <img id="handImage" alt="Prototipo-señas" src="{{ url_for('video_feed') }}">
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Letras:</h2>
+                <h2 id="palabra"></h2> <br>
+                <img class="img-fluid" id="handImage" alt="Prototipo-señas" src="{{ url_for('video_feed') }}">
+            </div>
+            <div class="col-md-6">
+                <h1>Traductor:</h1>
+                <form action="/traducir" method="post">
+                    <div class="form-group">
+                        <label class="fs-5" for="languageSelect">Seleccione el lenguaje a traducir:</label>
+                        <select name="lenguaje" id="languageSelect" class="form-control">
+                            <option value=""></option>
+                            <option value="1"><b>Árabe</b></option>
+                            <option value="2">Francés</option>
+                            <option value="3">Portugués</option>
+                            <option value="4">Japonés</option>
+                            <option value="5">Ruso</option>
+                        </select>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary">Seleccionar</button>
+                </form><br>
+                <h1>OPCIONES:</h1>
+                <p class="fs-5" id="prediccion"></p>
+                <p class="fs-5" id="traduccion"></p>
+            </div>
+
+        </div>
 
     </div>
 
-    <div>
-        <h1>Traductor:</h1>
-        <form action="/traducir" method="post">
-            <label for="languageSelect">Seleccione el lenguaje a traducir:</label>
-            <select name="lenguaje" id="languageSelect">
-                <option value=""></option>
-                <option value="1">Árabe</option>
-                <option value="2">Francés</option>
-                <option value="3">Portugués</option>
-                <option value="4">Japonés</option>
-                <option value="5">Ruso</option>
 
-            </select>
-            <button type="submit">Traducir</button>
-        </form>
-    </div>
 
-    <h1>OPCIONES:</h1>
-    <p id="prediccion"></p>
-    <p id="traduccion"></p>
+
 
 
     <script>
