@@ -60,7 +60,7 @@ def generate_frames():
                     frame, hand_landmarks, mp.solutions.hands.HAND_CONNECTIONS)
                 ret, buffer = cv2.imencode('.jpg', frame)
                 delay+=1 #usamos delay para que compare las manos despues de x frames
-                if delay==15:
+                if delay==12:
                     modelo_senias(buffer)
                     delay=0
                
@@ -99,7 +99,7 @@ def modelo_senias(imagen):
     
     #print("--------Esta es la palabra: "+str(palabra))
 
-    if len(palabra)>5:
+    if len(palabra)>=5:
         palabra=""
 
 
